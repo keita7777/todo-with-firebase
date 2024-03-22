@@ -19,21 +19,21 @@ function App() {
   const [todoList, setTodoList] = useState([]);
 
   useEffect(() => {
-    // const getTodos = async () => {
-    //   const data = await getDocs(collection(db, "todo"));
-    //   setTodoList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // };
-    // getTodos();
-    // console.log("success");
+    const getTodos = async () => {
+      const data = await getDocs(collection(db, "todo"));
+      setTodoList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getTodos();
+    console.log("success");
 
-    const todoData = collection(db, "todo");
-    getDocs(todoData).then((snapShot) => {
-      setTodoList(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    });
+    // const todoData = collection(db, "todo");
+    // getDocs(todoData).then((snapShot) => {
+    //   setTodoList(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    // });
 
-    onSnapshot(todoData, (t) => {
-      setTodoList(t.docs.map((doc) => ({ ...doc.data() })));
-    });
+    // onSnapshot(todoData, (t) => {
+    //   setTodoList(t.docs.map((doc) => ({ ...doc.data() })));
+    // });
 
     console.log("success");
   }, []);
@@ -72,6 +72,10 @@ function App() {
 
     const updatedItem = todoList.map((todo) => {
       return todo.id === id ? updatedTodo : todo;
+    });
+
+    await updateDoc(doc(db, "todo", id), {
+      text: currentTodo.text,
     });
 
     setTodoList(updatedItem);
